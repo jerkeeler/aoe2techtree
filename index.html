@@ -596,6 +596,25 @@
         return value;
     }
 
+    const scrollAmount = 100;
+    const techTree = document.getElementById('techtree');
+    let scrolling = false;
+    techTree.addEventListener('wheel', (event) => {
+        // Only hijack up/down scroll behavior, don't modify left/right scroll. Only scroll the element if we haven't
+        // already initiated another scroll.
+        if (event.deltaY !== 0 && !scrolling) {
+            // Request an animation frame for optimal performance and to prevent the innumerable wheel events from
+            // bogging down the UI by scrolling the tech tree.
+            window.requestAnimationFrame(() => {
+                techTree.scrollBy({
+                    left: scrollAmount * event.deltaY,
+                    behavior: 'smooth',
+                });
+                scrolling = false;
+            });
+            scrolling = true;
+        }
+    });
 
 </script>
 </body>
